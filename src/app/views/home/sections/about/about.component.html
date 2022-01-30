@@ -1,0 +1,12 @@
+<section class="about-content" #container>
+    <header>
+        <h1>Hey, I'm Donny.</h1>
+    </header>
+    <article class="flavor">
+        <p [class.visible]="stage >= 1">I'm a full stack developer with {{yearsExperience}} of experience.</p>
+        <p [class.visible]="stage >= 2">I make websites, and I <span class="emphasis">love</span> it.</p>
+    </article>
+    <aside *ngIf="!!canvasTransform">
+        <canvas [width]="canvasTransform.width" [height]="canvasTransform.height" class="overlay" #canvas></canvas>
+    </aside>
+</section>

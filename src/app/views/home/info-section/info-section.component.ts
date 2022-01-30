@@ -15,7 +15,7 @@ export class InfoSectionComponent {
   }
 
   private inViewClass: string = 'in-view';
-  private staticInViewClass: string = 'in-view-static';
+  private staticInViewClass: string = 'in-view';
 
   private activated: boolean = false;
 

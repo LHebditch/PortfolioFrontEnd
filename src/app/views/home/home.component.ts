@@ -24,13 +24,10 @@ export class HomeComponent implements AfterViewInit {
   }
 
   private checkScrolledIntoView(onStart: boolean): void {
-    const classToAdd = onStart ? this.startedinViewClassName : this.inViewClassName
     this.sections.forEach(element => {
-
-
       const rect = element.getRect();
       // add the class when the element is 2 thirds from top
-      const topShown = rect?.top >= 0 && rect?.top < (window.innerHeight / 3) * 2;
+      const topShown = rect?.top >= 0 && rect?.top < window.innerHeight;
       if (topShown) {
         element.activate(onStart);
       }
