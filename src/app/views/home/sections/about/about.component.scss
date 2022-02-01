@@ -23,16 +23,34 @@
 
 }
 
+@keyframes bounce {
+    10%{ bottom: 1em; }
+    25% { bottom: 1.5em; }
+    27% { bottom: 1.5em; }
+    40% { bottom: 1em; }
+    50% { bottom: 1.1em; }
+    60% { bottom: 1em; }
+    70% { bottom: 1.05em; }
+    80% { bottom: 1em; }
+}
+
 :host {
     .about-content {
         position: relative;
-        padding: $padding * 10;
         min-height: 40em;
         display: flex;
         align-items: center;
         justify-content: center;
-
         flex-direction: column;
+        opacity: 0;
+        transform: translateY(3em);
+        transition: all 2s;
+        transition-property: transform, opacity;
+
+        &.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
 
         header {
             z-index: 2;
@@ -88,5 +106,23 @@
         right:0;
         position: absolute;
         z-index: 0;
+    }
+
+    .next-section {
+        button {
+            position: absolute;
+            bottom: 1em;
+            border-radius: 10em;
+            background-color: rgba(250,250,250,0.2);
+            width: 4em;
+            height: 2em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(25,25,25,0.2);
+            animation: bounce infinite linear 1s;
+            border:0;
+            cursor: pointer;
+        }
     }
 }

@@ -1,12 +1,21 @@
-<section class="about-content" #container>
+<section class="about-content" #container [style.width.px]="windowWidth" [style.height.px]="windowHeight">
     <header>
         <h1>Hey, I'm Donny.</h1>
     </header>
     <article class="flavor">
-        <p [class.visible]="stage >= 1">I'm a full stack developer with {{yearsExperience}} of experience.</p>
+        <p [class.visible]="stage >= 1">I'm a full stack developer with
+            <b>{{experience?.years}}</b> years and
+            <b>{{experience?.days}}</b> days of experience.
+        </p>
         <p [class.visible]="stage >= 2">I make websites, and I <span class="emphasis">love</span> it.</p>
     </article>
     <aside *ngIf="!!canvasTransform">
         <canvas [width]="canvasTransform.width" [height]="canvasTransform.height" class="overlay" #canvas></canvas>
+    </aside>
+
+    <aside class="next-section">
+        <button (click)="scrollToNextSection()">
+            <i-feather name="arrow-down"></i-feather>
+        </button>
     </aside>
 </section>

@@ -1,25 +1,26 @@
 :host {
     display: block;
+    position: relative;
 
-    &.in-view-static {
-        .content {
-            padding-top: 0;
-            opacity: 1;
-            transition: none; 
-        }
-    }
+    // &.in-view-static {
+    //     .content {
+    //         transform: translateY(0);
+    //         opacity: 1;
+    //         transition: none; 
+    //     }
+    // }
 
-    &.in-view {        
-        .content {
-            padding-top: 0;
-            opacity: 1;
-        }
-    }
+    // &.in-view {        
+    //     .content {
+    //         transform: translateY(0);
+    //         opacity: 1;
+    //     }
+    // }
 
-    .content {
-        margin:0;
-        padding-top: 64px;
-        opacity: 0;
-        transition: all 0.8s;
-    }
+    // .content {
+    //     margin:0;
+    //     transform: translateY(4em);
+    //     opacity: 0;
+    //     transition: all 0.8s;
+    // }
 }

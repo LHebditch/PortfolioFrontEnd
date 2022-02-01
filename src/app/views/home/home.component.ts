@@ -9,13 +9,13 @@ import { InfoSectionComponent } from './info-section/info-section.component';
 export class HomeComponent implements AfterViewInit {
   @ViewChildren(InfoSectionComponent) private sections: QueryList<InfoSectionComponent>;
 
-  private readonly inViewClassName: string = 'in-view';
-  private readonly startedinViewClassName: string = 'in-view-static';
-
   constructor() { }
 
   ngAfterViewInit(): void {
-    this.checkScrolledIntoView(true);
+    // allow for change detection to stabalize
+    setTimeout(() => {
+      this.checkScrolledIntoView(true);
+    });
   }
 
   @HostListener('window:scroll', ['$event'])

@@ -1,4 +1,5 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, ViewChild } from '@angular/core';
+import { Subject, interval, takeUntil } from 'rxjs';
 
 type Vector2D = {
   x: number;
@@ -44,11 +45,15 @@ class Point {
   styleUrls: ['./about.component.scss']
 })
 export class AboutComponent implements OnInit, AfterViewInit {
-  @ViewChild('container') public container: ElementRef;
+  @ViewChild('container') public container: ElementRef<HTMLElement>;
   @ViewChild('canvas') public canvas: ElementRef<HTMLCanvasElement>;
 
-  public yearsExperience: string;
+  @Input('active') active: boolean = false;
+
+  public experience: { years: number, days: number };
   public stage: number = 0;
+  public windowWidth: number;
+  public windowHeight: number;
 
   // canvas variables
   public canvasTransform: Size;
@@ -58,32 +63,64 @@ export class AboutComponent implements OnInit, AfterViewInit {
   private pointMaxSize = 75;
   private points: Point[] = [];
 
+  // scrolling
+  private $scrollComplete: Subject<boolean> = new Subject();
+
   ngOnInit(): void {
-    this.yearsExperience = this.calculateYearsExperience();
+    this.experience = this.calculateYearsExperience();
     setInterval(() => {
-      this.stage += 1;
+      if (this.active) {
+        if (this.container.nativeElement.classList.contains('active')) {
+          this.stage += 1;
+        } else {
+          this.container.nativeElement.classList.add('active');
+        }
+      }
     }, 1000);
 
   }
 
   ngAfterViewInit(): void {
-    const { width, height } = this.container.nativeElement.getBoundingClientRect();
+    // allow for change detection to stabalise
     setTimeout(() => {
-      this.canvasTransform = { width, height };
+      this.resize();
       this.createPoints();
       this.playAnimation();
     });
   }
 
-  private calculateYearsExperience(): string {
+  @HostListener('window:resize', ['$event'])
+  resize() {
+    this.windowWidth = window.innerWidth;
+    this.windowHeight = window.innerHeight;
+    this.canvasTransform = { width: this.windowWidth, height: this.windowHeight };
+  }
+
+  public scrollToNextSection(): void {
+    interval(10)
+      .pipe(
+        takeUntil(this.$scrollComplete)
+      )
+      .subscribe((v) => {
+        if (document.body.scrollTop >= this.windowHeight) {
+          this.$scrollComplete.next(true);
+          return;
+        }
+        const val = v * 0.5;
+        const slow = val > 25 ? 25 : val;
+        document.body.scrollTo({ left: 0, top: document.body.scrollTop + (30 - slow) });
+      });
+  }
+
+  private calculateYearsExperience(): { years: number, days: number } {
     const start = new Date(2015, 9, 1);
     const current = Date.now();
 
     const dateDiff = Math.abs(current - start.getTime());
     const diffInDays = Math.ceil(dateDiff / (1000 * 60 * 60 * 24));
     const daysRemainder = diffInDays % 365;
-    const years = (diffInDays / 365).toFixed(0);
-    return `${years} years and ${daysRemainder} days`;
+    const years = Math.floor((diffInDays / 365));
+    return { years, days: daysRemainder };
   }
 
   private createPoints() {

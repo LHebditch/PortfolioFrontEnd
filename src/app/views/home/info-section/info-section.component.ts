@@ -10,14 +10,13 @@ export class InfoSectionComponent {
 
   constructor(private ref: ElementRef) { }
 
+  public activated: boolean = false;
   get element(): HTMLElement {
     return this.ref.nativeElement;
   }
 
   private inViewClass: string = 'in-view';
   private staticInViewClass: string = 'in-view';
-
-  private activated: boolean = false;
 
   public activate(onStart: boolean): void {
     if (!this.activated) {
